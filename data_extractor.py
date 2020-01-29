@@ -1,13 +1,14 @@
 import requests
 import pandas as pd
-from ativos import ativos
 from time import sleep
 from os import chdir, getcwd, listdir, system
 import sys
 import json
 
 initPath = getcwd()
-ativos = ativos["data"]
+
+with open("ativos.json", "r") as fin:
+    ativos = json.load(fin)
 
 
 def get_api_data(ativo, function = "TIME_SERIES_DAILY", formato="csv"):
@@ -52,18 +53,18 @@ def add_ativos(lista):
         ativo = lista[i]
         create_csv(ativo,get_api_data(ativo))
         print("------------------------------")
-        print(get_csv_data(ativo).iloc[0])
-        print("------------------------------")
+        #print(get_csv_data(ativo).iloc[0])
+        #print("------------------------------")
         if i < len(lista) - 1:
             print("Pausa para não sobrecarregar a API")
             sleeper(20)
 
 
 def write_ativos():
-    with open("ativos.py", "w") as fin:
+    with open("ativos.json", "w") as fin:
         ativos.sort()
-        outputData = json.dumps({"data": ativos}, indent=4)
-        fin.write("ativos = " + outputData)
+        outputData = json.dumps(ativos, indent=4)
+        fin.write(outputData)
 
 
 def clean_invalid_csv():
