@@ -92,11 +92,12 @@ while True:
     resposta = input(": ")
     if resposta == "1":
         print("Quais ativos? ")
-        resposta = input(": ").lower().split(" ")
+        resposta = input(": ").upper().split(" ")
         if resposta != [""]:
             ativos.extend(resposta)
             ativos = list(set(ativos))
             try:
+                print(resposta)
                 add_ativos(resposta)
             except ValueError:
                 pass
